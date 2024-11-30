@@ -13,8 +13,8 @@ import { Paths } from "./Entities";
 import LoginRoot from "./noukai-app/login/LoginRoot";
 import QuestionRootWrapper from "./noukai-app/question/QuestionRootWrapper";
 import ConsoleRootWrapper from "./console/buttons/ConsoleRootWrapper";  // ラッパーコンポーネントをインポート
-//import RankingActionRootWrapper from "./console/rankingAction/RankingActionRootWrapper";  // ラッパーコンポーネントをインポート
 import RankingRootWrapper from "./console/ranking/RankingRootWrapper";  // ラッパーコンポーネントをインポート
+import RankingTop5RootWrapper from "./console/rankingTop5/Ranking5RootWrapper";  // ラッパーコンポーネントをインポート
 
 console.log('Index.tsx loaded');  // デバッグ用ログ
 
@@ -27,8 +27,8 @@ root.render(
         <Route path={Paths.NOUKAI_LOGIN} element={<LoginRoot />} />
         <Route path={Paths.NOUKAI} element={<QuestionRootWrapper />} />
         <Route path={Paths.CONSOLE} element={<ConsoleRootWrapper />} />  {/* ラッパーコンポーネントを使用 */}
-        <Route path={Paths.RANKING} element={<RankingRootWrapper/>} />  {/* ラッパーコンポーネントを使用 */}
-       
+        <Route path={Paths.RANKING} element={<RankingRootWrapper />} />  {/* ラッパーコンポーネントを使用 */}
+        <Route path={Paths.RANKING_TOP5} element={<RankingTop5RootWrapper />} />  {/* ラッパーコンポーネントを使用 */}
       </Routes>
     </Router>
   </Provider>

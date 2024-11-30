@@ -15,6 +15,7 @@ const Ranking: React.FC<Props> = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('Ranking Props:', props);  // デバッグ用ログ
         props.actions.rankList();
     }, [props.actions]);
 
@@ -28,10 +29,12 @@ const Ranking: React.FC<Props> = (props) => {
         };
 
         setTimeout(() => {
-            const score = props.state.ranking[rank - 1];
-            const newRanking = ranking.push(score);
-            setRanking(newRanking);
-            goNext(rank - 1);
+            if (props.state.ranking.length > 0) {
+                const score = props.state.ranking[rank - 1];
+                const newRanking = ranking.push(score);
+                setRanking(newRanking);
+                goNext(rank - 1);
+            }
         }, calcTime(rank));
     };
 
@@ -61,6 +64,7 @@ const Ranking: React.FC<Props> = (props) => {
             <ul className="list-group">
                 {ranks}
             </ul>
+            {ranks.size === 0 && <h3 className="text-center">正解者がいません</h3>}
         </div>
     );
 };
