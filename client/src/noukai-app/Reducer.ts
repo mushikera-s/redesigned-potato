@@ -1,5 +1,5 @@
 import {MyAction, ActionTypes, NoukaiState} from "./Entities";
-import objectAssign = require('object-assign');
+import objectAssign from 'object-assign';
 
 const initialState: NoukaiState = {questions: [], questionNum: 0, isBetweenQuiz: true, isCorrectLastQuiz: null, answeredNum: 0};
 

@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors'); // CORSパッケージをインポート
 const app = express();
 const url = require('url');
+const mysql = require('mysql2');
 
 var server = require('http').createServer();
 var WebSocketServer = require('ws').Server;
@@ -10,17 +11,17 @@ var wss = new WebSocketServer({ server: server, path: "/quiz" });
 var port = 3000;
 
 //questions
-const questions = require('./questions.json');
+//const questions = require('./questions.json');
+//データベース「quizapp」への接続
+const con = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'g8zafu1pc',
+  database: 'quizapp'
+});
 
 //[{user: "user1", ws: ws1}, {user: "user2", ws: ws2}, ///]
 var connections = [];
-
-// CORS設定を追加
-app.use(cors({
-  origin: 'http://example.com', // 許可するオリジンを指定（ワイルドカード * で全て許可する場合もある）
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // 許可するHTTPメソッドを指定
-  allowedHeaders: ['Content-Type', 'Authorization'] // 許可するヘッダーを指定
-}));
 
 function broadcast(message) {
   console.log(message);
@@ -36,7 +37,7 @@ wss.on('connection', (ws, req) => {
   const dept = location.query.dept;
   var answeredNum = 0;
 
-  const user = dept + "_" + name;
+  const user = name;
 
   console.log("user: " + user + ', joined');
   connections.push({user: user, ws: ws});
@@ -55,8 +56,20 @@ wss.on('connection', (ws, req) => {
   });
 
   console.log(user + " joined!");
+
+  const sql = "INSERT INTO users (user_name) VALUES ('" + user + "');";
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+  })
 });
 
+// CORS設定を追加
+app.use(cors({
+  origin: 'http://example.com', // 許可するオリジンを指定（ワイルドカード * で全て許可する場合もある）
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // 許可するHTTPメソッドを指定
+  allowedHeaders: ['Content-Type', 'Authorization'] // 許可するヘッダーを指定
+}));
 app.use('/dist', express.static('dist'));
 app.use('/public', express.static('public'));
 
@@ -68,7 +81,14 @@ app.post('/api/quizs/:num', (req, res) => {
 });
 
 app.get('/api/questions', (req, res) => {
+  const questions = 'SELECT * FROM questions';
+  con.query(questions, (err, questions) => {
+  if (err) {
+    res.status(500).send('Database query error');
+    return;
+  };
   res.status(200).json(questions);
+  });
 });
 
 app.post('/api/answers/:num', (req, res) => {

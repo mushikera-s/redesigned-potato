@@ -4,9 +4,10 @@ import QuestionRoot from "./QuestionRoot";
 import { Dispatch } from "redux";
 import { DispatchActions } from "../DispatchActions";
 import { useParams } from "react-router-dom";
+import { NoukaiState } from "../Entities";
 
 interface Props {
-    noukaiState: any;  // 必要に応じて適切な型に置き換えてください
+    noukaiState: NoukaiState;
     actions: DispatchActions;
 }
 
