@@ -8,8 +8,12 @@ export class Paths{
 }
 
 export interface IQuestion {
-    id: number;
-    choices: string[];
-    answer: number;
-    description: string;
+    question_id: number;
+    question_text: string;
+    question_image: string;
+    question_num1: number;
+    question_num2: number;
+    question_num3: number;
+    question_num4: number;
+    answer_num: number;
 }
